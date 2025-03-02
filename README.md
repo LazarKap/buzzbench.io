@@ -1,6 +1,6 @@
 # BuzzBench
 
-A powerful, flexible API performance testing tool designed to work with the BuzzBench dashboard.
+A powerful, flexible API performance testing tool designed to work with the BuzzBench.io dashboard.
 
 ## Features
 
