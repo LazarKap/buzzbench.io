@@ -15,13 +15,13 @@ A powerful, flexible API performance testing tool designed to work with the Buzz
 ### Using Go Install
 
 ```bash
-go install github.com/yourusername/buzzbench/cmd/buzzbench@latest
+go install github.com/lazarkap/buzzbench.io/cmd/buzzbench@latest
 ```
 
 ### From Source
 
 ```bash
-git clone https://github.com/yourusername/buzzbench.git
+git clone https://github.com/lazarkap/buzzbench.io.git
 cd buzzbench
 go build -o buzzbench ./cmd/buzzbench
 ```
@@ -39,7 +39,7 @@ export BUZZBENCH_API_KEY=your_api_key_here
 Optionally set a custom API URL:
 
 ```bash
-export BUZZBENCH_API_URL=https://your-buzzbench-instance.com/api
+export BUZZBENCH_API_URL=https://buzzbench.io/api
 ```
 
 ### Running Tests
