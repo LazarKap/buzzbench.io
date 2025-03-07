@@ -16,6 +16,23 @@ type TestConfiguration struct {
 	AuthToken     string `json:"auth_token,omitempty"`
 	Body          string `json:"body,omitempty"`
 	RunInPipeline bool   `json:"run_in_pipeline"`
+	UseVariables  bool   `json:"use_variables"`       // Whether to use dynamic variables
+	Variables     string `json:"variables,omitempty"` // JSON string for variable definitions
+	Description   string `json:"description,omitempty"`
+}
+
+// Variable represents a definition of a dynamic variable
+type Variable struct {
+	Name       string `json:"name"`
+	Type       string `json:"type"`                 // string, integer, float, boolean, uuid, timestamp
+	Strategy   string `json:"strategy"`             // static, sequential, random, uuid, timestamp, template
+	Value      string `json:"value,omitempty"`      // for static
+	StartValue int    `json:"startValue,omitempty"` // for sequential
+	EndValue   int    `json:"endValue,omitempty"`   // for sequential
+	Increment  int    `json:"increment,omitempty"`  // for sequential
+	MinValue   int    `json:"minValue,omitempty"`   // for random
+	MaxValue   int    `json:"maxValue,omitempty"`   // for random
+	Template   string `json:"template,omitempty"`   // for template
 }
 
 // TestResult contains the outcome of a performance test
