@@ -20,7 +20,7 @@ type Config struct {
 }
 
 // DefaultBaseURL is the default API endpoint
-const DefaultBaseURL = "http://localhost:5173/api"
+const DefaultBaseURL = "https://buzzbench.io/api"
 
 // EmbeddedApiKey can be set at compile time using -ldflags
 var EmbeddedApiKey string
@@ -35,18 +35,18 @@ func New() *Config {
 			BaseURL: DefaultBaseURL,
 		}
 	}
-	
+
 	// Load .env file if it exists
 	loadEnvFile(".env")
-	
+
 	cfg := &Config{
 		BaseURL: getEnv("BUZZBENCH_API_URL", DefaultBaseURL),
 		APIKey:  getEnv("BUZZBENCH_API_KEY", ""),
 	}
-	
+
 	// Clean the BaseURL
 	cfg.BaseURL = strings.TrimRight(cfg.BaseURL, "/")
-	
+
 	return cfg
 }
 
