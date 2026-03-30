@@ -57,11 +57,11 @@ type VariableContext struct {
 
 // RunTest executes a performance test based on the provided configuration
 func (r *Runner) RunTest(config api.TestConfiguration) (api.TestResult, error) {
-	r.logInfo("Starting test: %s", config.Name)
-	r.logInfo("URL: %s", config.URL)
-	r.logInfo("Method: %s", config.Method)
-	r.logInfo("Requests: %d", config.Requests)
-	r.logInfo("Concurrency: %d", config.Concurrency)
+	r.logDebug("Starting test: %s", config.Name)
+	r.logDebug("URL: %s", config.URL)
+	r.logDebug("Method: %s", config.Method)
+	r.logDebug("Requests: %d", config.Requests)
+	r.logDebug("Concurrency: %d", config.Concurrency)
 
 	// Create context with timeout
 	ctx, cancel := context.WithTimeout(
@@ -73,7 +73,7 @@ func (r *Runner) RunTest(config api.TestConfiguration) (api.TestResult, error) {
 	// Initialize variable context if needed
 	var varCtx *VariableContext
 	if config.UseVariables {
-		r.logInfo("Using variables for this test")
+		r.logDebug("Using variables for this test")
 		varCtx = r.setupVariableContext(config)
 	}
 
@@ -205,12 +205,12 @@ func (r *Runner) RunTest(config api.TestConfiguration) (api.TestResult, error) {
 		})
 	}
 
-	r.logInfo("Test completed successfully")
-	r.logInfo("Success Rate: %.2f%%", result.SuccessRate)
-	r.logInfo("Avg Response Time: %.2f ms", result.AvgResponseTime)
-	r.logInfo("Min Response Time: %.2f ms", result.MinResponseTime)
-	r.logInfo("Max Response Time: %.2f ms", result.MaxResponseTime)
-	r.logInfo("Requests Per Second: %.2f", result.RequestsPerSecond)
+	r.logDebug("Test completed successfully")
+	r.logDebug("Success Rate: %.2f%%", result.SuccessRate)
+	r.logDebug("Avg Response Time: %.2f ms", result.AvgResponseTime)
+	r.logDebug("Min Response Time: %.2f ms", result.MinResponseTime)
+	r.logDebug("Max Response Time: %.2f ms", result.MaxResponseTime)
+	r.logDebug("Requests Per Second: %.2f", result.RequestsPerSecond)
 
 	return result, nil
 }

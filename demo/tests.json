@@ -1,0 +1,72 @@
+[
+  {
+    "id": "demo-1",
+    "name": "Health check — baseline",
+    "description": "Fast endpoint, always 200. Good for establishing a throughput baseline.",
+    "url": "http://localhost:8000/health",
+    "method": "GET",
+    "requests": 200,
+    "concurrency": 20,
+    "timeout_seconds": 5
+  },
+  {
+    "id": "demo-2",
+    "name": "User lookup — sequential IDs",
+    "description": "Hits /users/1 through /users/50 in order. Shows sequential variable substitution in the URL.",
+    "url": "http://localhost:8000/users/{{userId}}",
+    "method": "GET",
+    "requests": 100,
+    "concurrency": 10,
+    "timeout_seconds": 5,
+    "variables": [
+      {
+        "name": "userId",
+        "type": "integer",
+        "strategy": "sequential",
+        "startValue": 1,
+        "endValue": 50,
+        "increment": 1
+      }
+    ]
+  },
+  {
+    "id": "demo-3",
+    "name": "Create order — random product IDs",
+    "description": "POST with a random variable inside the JSON body. Each request gets a different product_id.",
+    "url": "http://localhost:8000/orders",
+    "method": "POST",
+    "requests": 50,
+    "concurrency": 5,
+    "timeout_seconds": 5,
+    "body": "{\"product_id\": {{productId}}, \"quantity\": 1}",
+    "variables": [
+      {
+        "name": "productId",
+        "type": "integer",
+        "strategy": "random",
+        "minValue": 1,
+        "maxValue": 999
+      }
+    ]
+  },
+  {
+    "id": "demo-4",
+    "name": "Slow endpoint — latency spread",
+    "description": "Each response takes 200–500 ms. Watch the min/max/avg spread in the summary.",
+    "url": "http://localhost:8000/slow",
+    "method": "GET",
+    "requests": 20,
+    "concurrency": 5,
+    "timeout_seconds": 10
+  },
+  {
+    "id": "demo-5",
+    "name": "Flaky endpoint — error rate",
+    "description": "Returns 500 ~30% of the time. Demonstrates non-100% success rate reporting.",
+    "url": "http://localhost:8000/flaky",
+    "method": "GET",
+    "requests": 100,
+    "concurrency": 10,
+    "timeout_seconds": 5
+  }
+]
