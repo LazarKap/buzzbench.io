@@ -1,0 +1,208 @@
+[
+  {
+    "id": "ex-1",
+    "name": "Simple GET — baseline",
+    "description": "The simplest possible test. No variables, no body. Use this to establish a throughput and latency baseline for any endpoint.",
+    "url": "http://api.example.com/health",
+    "method": "GET",
+    "requests": 100,
+    "concurrency": 10,
+    "timeout_seconds": 5
+  },
+
+  {
+    "id": "ex-2",
+    "name": "Authenticated GET",
+    "description": "Adds an Authorization header. The auth_token value is passed verbatim — include the scheme (Bearer, Token, Basic, etc.).",
+    "url": "http://api.example.com/me",
+    "method": "GET",
+    "requests": 100,
+    "concurrency": 10,
+    "timeout_seconds": 5,
+    "auth_token": "Bearer your-token-here"
+  },
+
+  {
+    "id": "ex-3",
+    "name": "POST with a static body",
+    "description": "Sends the same JSON body with every request. Good for testing write endpoints when you don't need varied data.",
+    "url": "http://api.example.com/messages",
+    "method": "POST",
+    "requests": 100,
+    "concurrency": 10,
+    "timeout_seconds": 5,
+    "body": "{\"channel\": \"general\", \"text\": \"load test message\"}"
+  },
+
+  {
+    "id": "ex-4",
+    "name": "Sequential IDs in URL — static strategy",
+    "description": "Uses a static variable. Every request hits the same resource. Useful when you want to test one specific record under load.",
+    "url": "http://api.example.com/users/{{userId}}",
+    "method": "GET",
+    "requests": 100,
+    "concurrency": 10,
+    "timeout_seconds": 5,
+    "variables": [
+      {
+        "name": "userId",
+        "type": "string",
+        "strategy": "static",
+        "value": "usr_abc123"
+      }
+    ]
+  },
+
+  {
+    "id": "ex-5",
+    "name": "Paginated endpoint — sequential strategy",
+    "description": "Cycles through pages 1-20 in order. Sequential wraps back to startValue after reaching endValue, so with 200 requests and 20 pages each page gets hit ~10 times.",
+    "url": "http://api.example.com/products?page={{page}}&limit=20",
+    "method": "GET",
+    "requests": 200,
+    "concurrency": 10,
+    "timeout_seconds": 5,
+    "variables": [
+      {
+        "name": "page",
+        "type": "integer",
+        "strategy": "sequential",
+        "startValue": 1,
+        "endValue": 20,
+        "increment": 1
+      }
+    ]
+  },
+
+  {
+    "id": "ex-6",
+    "name": "Random user lookup — random strategy",
+    "description": "Fetches a random user ID between 1 and 1000 on every request. Simulates a realistic read pattern that avoids cache warming on a single record.",
+    "url": "http://api.example.com/users/{{userId}}",
+    "method": "GET",
+    "requests": 200,
+    "concurrency": 20,
+    "timeout_seconds": 5,
+    "variables": [
+      {
+        "name": "userId",
+        "type": "integer",
+        "strategy": "random",
+        "minValue": 1,
+        "maxValue": 1000
+      }
+    ]
+  },
+
+  {
+    "id": "ex-7",
+    "name": "Create resource with unique ID — uuid strategy",
+    "description": "Generates a new UUID for every request. Use this when the endpoint requires a unique identifier per call, such as idempotency keys or client-generated IDs.",
+    "url": "http://api.example.com/resources",
+    "method": "POST",
+    "requests": 50,
+    "concurrency": 5,
+    "timeout_seconds": 10,
+    "body": "{\"id\": \"{{resourceId}}\", \"name\": \"load-test-resource\"}",
+    "variables": [
+      {
+        "name": "resourceId",
+        "type": "string",
+        "strategy": "uuid"
+      }
+    ]
+  },
+
+  {
+    "id": "ex-8",
+    "name": "Ingest event with current timestamp — timestamp strategy",
+    "description": "Stamps each request with the current time in RFC3339 format. Useful for event ingestion, audit log, or time-series endpoints.",
+    "url": "http://api.example.com/events",
+    "method": "POST",
+    "requests": 100,
+    "concurrency": 10,
+    "timeout_seconds": 5,
+    "body": "{\"event\": \"page_view\", \"occurred_at\": \"{{ts}}\", \"user_id\": 42}",
+    "variables": [
+      {
+        "name": "ts",
+        "type": "string",
+        "strategy": "timestamp"
+      }
+    ]
+  },
+
+  {
+    "id": "ex-9",
+    "name": "Generated usernames — template strategy",
+    "description": "Builds a string from a template using the built-in {{$index}} and {{$random}} placeholders. Produces values like user_0, user_1, user_2 etc. No variable definition needed for $index and $random — they work anywhere.",
+    "url": "http://api.example.com/users",
+    "method": "POST",
+    "requests": 50,
+    "concurrency": 5,
+    "timeout_seconds": 5,
+    "body": "{\"username\": \"{{username}}\", \"email\": \"{{email}}\"}",
+    "variables": [
+      {
+        "name": "username",
+        "type": "string",
+        "strategy": "template",
+        "template": "loadtest_user_{{$index}}"
+      },
+      {
+        "name": "email",
+        "type": "string",
+        "strategy": "template",
+        "template": "user{{$random}}@loadtest.example.com"
+      }
+    ]
+  },
+
+  {
+    "id": "ex-10",
+    "name": "Full example — multiple variables combined",
+    "description": "Shows all variable types working together in one test. Mix and match strategies freely — each variable is resolved independently per request.",
+    "url": "http://api.example.com/orders/{{orderId}}/items",
+    "method": "POST",
+    "requests": 100,
+    "concurrency": 10,
+    "timeout_seconds": 10,
+    "auth_token": "Bearer your-token-here",
+    "body": "{\"request_id\": \"{{reqId}}\", \"product_id\": {{productId}}, \"quantity\": {{qty}}, \"note\": \"{{note}}\"}",
+    "variables": [
+      {
+        "name": "orderId",
+        "type": "integer",
+        "strategy": "sequential",
+        "startValue": 1000,
+        "endValue": 1099,
+        "increment": 1
+      },
+      {
+        "name": "reqId",
+        "type": "string",
+        "strategy": "uuid"
+      },
+      {
+        "name": "productId",
+        "type": "integer",
+        "strategy": "random",
+        "minValue": 1,
+        "maxValue": 500
+      },
+      {
+        "name": "qty",
+        "type": "integer",
+        "strategy": "random",
+        "minValue": 1,
+        "maxValue": 10
+      },
+      {
+        "name": "note",
+        "type": "string",
+        "strategy": "template",
+        "template": "load-test-item-{{$index}}"
+      }
+    ]
+  }
+]

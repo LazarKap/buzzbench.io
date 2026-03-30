@@ -12,3 +12,7 @@ go.work
 go.work.sum
 
 .env
+
+# Build outputs
+buzzbench
+buzzbench_demo
