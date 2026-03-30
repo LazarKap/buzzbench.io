@@ -18,10 +18,18 @@ Optionally integrates with the BuzzBench.io dashboard for storing and visualizin
 
 ## Installation
 
-### Using Go Install
+### Using Go Install (recommended)
+
+Installs the binary to your `$GOPATH/bin` so you can run `buzzbench` from anywhere:
 
 ```bash
 go install github.com/lazarkap/buzzbench.io/cmd/buzzbench@latest
+```
+
+Make sure `$GOPATH/bin` is on your PATH. Add this to your shell profile if needed:
+
+```bash
+export PATH="$PATH:$(go env GOPATH)/bin"
 ```
 
 ### From Source
@@ -29,6 +37,11 @@ go install github.com/lazarkap/buzzbench.io/cmd/buzzbench@latest
 ```bash
 git clone https://github.com/lazarkap/buzzbench.io.git
 cd BuzzBenchService
+
+# Install to PATH (same as above)
+go install ./cmd/buzzbench
+
+# Or build a local binary (use ./buzzbench to run it)
 go build -o buzzbench ./cmd/buzzbench
 ```
 
@@ -36,9 +49,11 @@ go build -o buzzbench ./cmd/buzzbench
 
 ## Quick Start — Local Demo
 
-No account needed. Requires Python 3 + pip.
+No account needed. Requires Go and Python 3.
 
 ```bash
+git clone https://github.com/lazarkap/buzzbench.io.git
+cd BuzzBenchService
 ./demo.sh
 ```
 
