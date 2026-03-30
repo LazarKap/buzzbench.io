@@ -44,6 +44,13 @@ cd BuzzBenchService
 
 This builds the binary, starts a local FastAPI server, and runs several example tests against it — covering flag mode, config-file mode, POST requests, dynamic variables, slow endpoints, and error rate reporting.
 
+## Examples
+
+The `examples/` folder contains two files to help you get started quickly:
+
+- **`example-tests.json`** — a fully annotated config file with one test per feature: every variable strategy, authenticated requests, POST bodies, and a combined multi-variable example. Copy and adapt it for your own API.
+- **`llm-prompt.md`** — a prompt template you can paste into Claude, ChatGPT, or any LLM. Fill in your API details and it will generate a ready-to-run `tests.json` for you.
+
 ---
 
 ## Usage
